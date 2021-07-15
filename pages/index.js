@@ -22,6 +22,27 @@ function ProfileSidebar(props) {
   )
 }
 
+function ProfileRelationsBox(props) {
+  return (
+    <ProfileRelationsBoxWrapper >
+      <p className="smallTitle">{props.titulo} ({props.itens.length})</p>
+
+      <ul>
+        {props.itens.map((itemAtual) => {
+          return (
+            <li key={itemAtual.id}>
+              <a href={`https://github.com/${itemAtual.login}`} target="_blank">
+                <img src={`https://github.com/${itemAtual.login}.png`} />
+                <span>{itemAtual.login}</span>
+              </a>
+            </li>
+          )
+        })}
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  )
+}
+
 export default function Home() {
 
   const gitHubUsername = 'cecez';
@@ -37,6 +58,14 @@ export default function Home() {
     titulo: 'Comunidade 2', 
     imagem: 'https://picsum.photos/200?2'
   }])
+
+  const [seguidores, setSeguidores] = React.useState([])
+  React.useEffect(() => {
+    fetch('https://api.github.com/users/cecez/followers')
+      .then((r) => r.json())
+      .then((r) => setSeguidores(r))
+  }, [])
+
 
   return (
     <>
@@ -87,7 +116,7 @@ export default function Home() {
                   name="imagem"
                   placeholder="URL da capa da comunidade?"
                   type="text"
-                  value="https://picsum.photos/200"
+                  defaultValue="https://picsum.photos/200"
                 />
               </div>
               <button>
@@ -98,6 +127,8 @@ export default function Home() {
         </div>
 
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
+          <ProfileRelationsBox titulo="Seguidores" itens={seguidores} />
+          
           <ProfileRelationsBoxWrapper >
             <p className="smallTitle">Pessoas da comunidade ({pessoasFavoritas.length})</p>
 
