@@ -13,7 +13,8 @@ npx create-next-app --example with-styled-components
 # Executando servidor em desenvolvimento
 yarn dev
 
-
+# Adicionando dependência para projeto
+yarn add datocms-client
 ```
 
 
